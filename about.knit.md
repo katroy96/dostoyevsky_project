@@ -1,12 +1,13 @@
----
-title: "Работа"
----
-
 # Подготовка корпуса
 
 Вырежем интересующие нас рассказы из pdf полных томов и запишем в папку corpus.
 
-```{r, message = FALSE, results = 'hide'}
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
 library(qpdf)
 library(pdftools)
 
@@ -53,14 +54,22 @@ pdf_subset(input = "./full texts/том_22.pdf",
 pdf_subset(input = "./full texts/том_25.pdf",
            output = "./corpus/сон смешного человека.pdf",
            pages = c(106:121))
-
 ```
+:::
+
+
+
 
 # Извлечение текста из pdf с помощью {tesseract}
 
 Наши pdf хранят уже распознанный текст. Проверим это.
 
-```{r, message = FALSE, results = 'hide'}
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
 library(tesseract)
 library(tesseractgt)
 
@@ -74,12 +83,20 @@ wife_text <- pdf_text(pdf = "./corpus/чужая жена и муж под кр�
 bobok_text <- pdf_text(pdf = "./corpus/бобок.pdf")
 child_text <- pdf_text(pdf = "./corpus/мальчик у христа на елке.pdf")
 dream_text <- pdf_text(pdf = "./corpus/сон смешного человека.pdf")
-
 ```
+:::
+
+
+
 
 С помощью регулярных выражений немного приберем полученные тексты.
 
-```{r, message = FALSE, results = 'hide'}
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
 library(stringr)
 library(purrr)
 
@@ -119,17 +136,36 @@ clean_vor_text <- clean_text(vor_text)
   writeLines(clean_vor_text, con = "./clean corpus/честный вор.txt")
 clean_wife_text <- clean_text(wife_text)
   writeLines(clean_wife_text, con = "./clean corpus/чужая жена и муж под кроватью.txt")
-
-
 ```
+:::
+
+
+
 
 Я понимаю, что это можно было бы превратить в цикл, но не сообразила как. Поэтому получился громоздкий, некрасивый код. Но, по крайней мере, он работает.
 
 # Лемматизированный частотный словарь для корпуса с помощью {udpipe}
 
 
-```{r, message = FALSE}
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
 library(udpipe)
+```
+
+::: {.cell-output .cell-output-stderr}
+
+```
+Warning: пакет 'udpipe' был собран под R версии 4.5.2
+```
+
+
+:::
+
+```{.r .cell-code}
 library(tidyverse)
 library(tidytext)
 library(dplyr)
@@ -179,11 +215,74 @@ text_word_tfidf |>
   facet_wrap(~title, scales = "free") +
   scale_x_reordered() +
   coord_flip()
+```
+
+::: {.cell-output-display}
+![](about_files/figure-html/unnamed-chunk-4-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+model <- udpipe_download_model("russian")
+```
+
+::: {.cell-output .cell-output-stderr}
 
 ```
-```{r}
+Downloading udpipe model from https://raw.githubusercontent.com/jwijffels/udpipe.models.ud.2.5/master/inst/udpipe-ud-2.5-191206/russian-gsd-ud-2.5-191206.udpipe to C:/Users/katya/Documents/dostoyevsky_project/russian-gsd-ud-2.5-191206.udpipe
+```
 
-model <- udpipe_download_model("russian")
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+```
+ - This model has been trained on version 2.5 of data from https://universaldependencies.org
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+```
+ - The model is distributed under the CC-BY-SA-NC license: https://creativecommons.org/licenses/by-nc-sa/4.0
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+```
+ - Visit https://github.com/jwijffels/udpipe.models.ud.2.5 for model license details.
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+```
+ - For a list of all models and their licenses (most models you can download with this package have either a CC-BY-SA or a CC-BY-SA-NC license) read the documentation at ?udpipe_download_model. For building your own models: visit the documentation by typing vignette('udpipe-train', package = 'udpipe')
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+```
+Downloading finished, model stored at 'C:/Users/katya/Documents/dostoyevsky_project/russian-gsd-ud-2.5-191206.udpipe'
+```
+
+
+:::
+
+```{.r .cell-code}
 ud_model <- udpipe_load_model(model$file_model)
 
 corpus_ann <- udpipe_annotate(ud_model, corpus_sep$text, doc_id = corpus_sep$title)
@@ -194,7 +293,31 @@ corpus_pos <- as_tibble(corpus_ann) |>
 corpus_pos |> 
   filter(upos == "NOUN") |> 
   select(doc_id, token, lemma, upos, xpos)
+```
 
+::: {.cell-output .cell-output-stdout}
+
+```
+# A tibble: 16,999 × 5
+   doc_id    token      lemma      upos  xpos 
+   <chr>     <chr>      <chr>      <chr> <chr>
+ 1 бобок.txt деревне    деревня    NOUN  NN   
+ 2 бобок.txt откровение откровение NOUN  NN   
+ 3 бобок.txt чертах     черта      NOUN  NN   
+ 4 бобок.txt Искуситель Искуситель NOUN  NN   
+ 5 бобок.txt г-на       г-н        NOUN  NN   
+ 6 бобок.txt комедии    комедия    NOUN  NN   
+ 7 бобок.txt живи       живь       NOUN  NN   
+ 8 бобок.txt плоховат   плоховатый NOUN  NN   
+ 9 бобок.txt Жаль       жаль       NOUN  NN   
+10 бобок.txt тут        тут        NOUN  NN   
+# ℹ 16,989 more rows
+```
+
+
+:::
+
+```{.r .cell-code}
 nouns <- corpus_pos  |> 
   filter(upos %in% c("NOUN", "PROPN")) |> 
   count(doc_id, lemma, sort = TRUE)
@@ -209,7 +332,15 @@ nouns |>
   scale_x_reordered() +
   facet_wrap(~ doc_id, scales = "free") +
   xlab(NULL)
-
 ```
+
+::: {.cell-output-display}
+![](about_files/figure-html/unnamed-chunk-5-1.png){width=672}
+:::
+:::
+
+
+
 Я понимаю, что проект сделан из рук вон некачественно и плохо, но к концу года силы совсем покинули меня. Хотелось бы сделать что-то хорошее, надеюсь, что это ещё впереди. Спасибо вам за курс, я правда научилась чему-то очень полезному, важному и новому (хотя, вероятно, этого не видно по этому проекту, но всё-таки это правда!)
+
 
