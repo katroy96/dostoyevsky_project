@@ -19,11 +19,11 @@ format:
     toc: true
     fontsize: "14pt"
     bibliography: 
-    - bibliography/dostoyevsky1971.bib
-    - bibliography/dostoyevsky1972.bib
-    - bibliography/dostoyevsky1980.bib
-    - bibliography/dostoyevsky1981.bib
-    - bibliography/dostoyevsky1983.bib
+    - ./bibliography/dostoyevsky1971.bib
+    - ./bibliography/dostoyevsky1972.bib
+    - ./bibliography/dostoyevsky1980.bib
+    - ./bibliography/dostoyevsky1981.bib
+    - ./bibliography/dostoyevsky1983.bib
 
 
 
