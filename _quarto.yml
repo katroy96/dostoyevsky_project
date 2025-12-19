@@ -18,12 +18,6 @@ format:
     css: styles.css
     toc: true
     fontsize: "14pt"
-    bibliography: 
-    - ./bibliography/dostoyevsky1972.bib
-    - ./bibliography/dostoyevsky1973.bib
-    - ./bibliography/dostoyevsky1980.bib
-    - ./bibliography/dostoyevsky1981.bib
-    - ./bibliography/dostoyevsky1983.bib
 
 
 

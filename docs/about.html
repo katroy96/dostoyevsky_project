@@ -141,8 +141,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#подготовка-корпуса" id="toc-подготовка-корпуса" class="nav-link active" data-scroll-target="#подготовка-корпуса">Подготовка корпуса</a></li>
+  <li><a href="#извлечение-текста-из-pdf-с-помощью-tesseract" id="toc-извлечение-текста-из-pdf-с-помощью-tesseract" class="nav-link" data-scroll-target="#извлечение-текста-из-pdf-с-помощью-tesseract">Извлечение текста из pdf с помощью {tesseract}</a></li>
+  <li><a href="#лемматизированный-частотный-словарь-для-корпуса-с-помощью-udpipe" id="toc-лемматизированный-частотный-словарь-для-корпуса-с-помощью-udpipe" class="nav-link" data-scroll-target="#лемматизированный-частотный-словарь-для-корпуса-с-помощью-udpipe">Лемматизированный частотный словарь для корпуса с помощью {udpipe}</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -166,15 +174,256 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>About this site</p>
+<section id="подготовка-корпуса" class="level1">
+<h1>Подготовка корпуса</h1>
+<p>Вырежем интересующие нас рассказы из pdf полных томов и запишем в папку corpus.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(qpdf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pdftools)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_2.pdf"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/честный вор.pdf"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">84</span><span class="sc">:</span><span class="dv">96</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_2.pdf"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/елка и свадьба.pdf"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">97</span><span class="sc">:</span><span class="dv">103</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_2.pdf"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/елка и свадьба.pdf"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">97</span><span class="sc">:</span><span class="dv">103</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_2.pdf"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/маленький герой.pdf"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">270</span><span class="sc">:</span><span class="dv">297</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_2.pdf"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/чужая жена и муж под кроватью.pdf"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">51</span><span class="sc">:</span><span class="dv">83</span>))</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_5.pdf"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/скверный анекдот.pdf"</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">47</span>))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_5.pdf"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/крокодил.pdf"</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">182</span><span class="sc">:</span><span class="dv">209</span>))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_21.pdf"</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/бобок.pdf"</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">43</span><span class="sc">:</span><span class="dv">56</span>))</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_22.pdf"</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/мальчик у христа на елке.pdf"</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">16</span><span class="sc">:</span><span class="dv">19</span>))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_22.pdf"</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/мужик марей.pdf"</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">48</span><span class="sc">:</span><span class="dv">52</span>))</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf_subset</span>(<span class="at">input =</span> <span class="st">"./full texts/том_25.pdf"</span>,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>           <span class="at">output =</span> <span class="st">"./corpus/сон смешного человека.pdf"</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>           <span class="at">pages =</span> <span class="fu">c</span>(<span class="dv">106</span><span class="sc">:</span><span class="dv">121</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="извлечение-текста-из-pdf-с-помощью-tesseract" class="level1">
+<h1>Извлечение текста из pdf с помощью {tesseract}</h1>
+<p>Наши pdf хранят уже распознанный текст. Проверим это.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tesseract)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tesseractgt)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>elka_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/елка и свадьба.pdf"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>krokodile_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/крокодил.pdf"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>hero_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/маленький герой.pdf"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>marey_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/мужик марей.pdf"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>anekdot_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/скверный анекдот.pdf"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>vor_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/честный вор.pdf"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>wife_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/чужая жена и муж под кроватью.pdf"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>bobok_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/бобок.pdf"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>child_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/мальчик у христа на елке.pdf"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>dream_text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(<span class="at">pdf =</span> <span class="st">"./corpus/сон смешного человека.pdf"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>С помощью регулярных выражений немного приберем полученные тексты.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>clean_text <span class="ot">&lt;-</span> <span class="cf">function</span>(text) {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  text <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(text, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, <span class="st">""</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(text) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    text <span class="ot">&lt;-</span> <span class="fu">paste</span>(text, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> <span class="fu">str_split</span>(text, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  non_empty_lines <span class="ot">&lt;-</span> lines[<span class="fu">str_trim</span>(lines) <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(non_empty_lines) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">""</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  cleaned_text <span class="ot">&lt;-</span> <span class="fu">paste</span>(non_empty_lines, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(cleaned_text)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>clean_anekdot_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(anekdot_text)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_anekdot_text, <span class="at">con =</span> <span class="st">"./clean corpus/скверный анекдот.txt"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>clean_elka_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(elka_text)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_elka_text, <span class="at">con =</span> <span class="st">"./clean corpus/елка и свадьба.txt"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>clean_bobok_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(bobok_text)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_bobok_text, <span class="at">con =</span> <span class="st">"./clean corpus/бобок.txt"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>clean_child_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(child_text)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_child_text, <span class="at">con =</span> <span class="st">"./clean corpus/мальчик у христа на елке.txt"</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>clean_dream_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(dream_text)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_dream_text, <span class="at">con =</span> <span class="st">"./clean corpus/сон смешного человека.txt"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>clean_hero_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(hero_text)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_hero_text, <span class="at">con =</span> <span class="st">"./clean corpus/маленький герой.txt"</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>clean_krokodile_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(krokodile_text)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_krokodile_text, <span class="at">con =</span> <span class="st">"./clean corpus/крокодил.txt"</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>clean_marey_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(marey_text)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_marey_text, <span class="at">con =</span> <span class="st">"./clean corpus/мужик марей.txt"</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>clean_vor_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(vor_text)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_vor_text, <span class="at">con =</span> <span class="st">"./clean corpus/честный вор.txt"</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>clean_wife_text <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(wife_text)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(clean_wife_text, <span class="at">con =</span> <span class="st">"./clean corpus/чужая жена и муж под кроватью.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Я понимаю, что это можно было бы превратить в цикл, но не сообразила как. Поэтому получился громоздкий, некрасивый код. Но, по крайней мере, он работает.</p>
+</section>
+<section id="лемматизированный-частотный-словарь-для-корпуса-с-помощью-udpipe" class="level1">
+<h1>Лемматизированный частотный словарь для корпуса с помощью {udpipe}</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(udpipe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: пакет 'udpipe' был собран под R версии 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stopwords)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>corpus_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"clean corpus"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>read_text <span class="ot">&lt;-</span> <span class="cf">function</span>(file){</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_lines</span>(file) <span class="sc">|&gt;</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">" "</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>corpus_texts <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> corpus_files,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">map_chr</span>(corpus_files, read_text)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>corpus_sep <span class="ot">&lt;-</span> corpus_texts <span class="sc">|&gt;</span> </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">title =</span> <span class="fu">str_remove</span>(title, <span class="st">"clean corpus/"</span>))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>corpus_words <span class="ot">&lt;-</span> corpus_sep <span class="sc">|&gt;</span> </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>sw <span class="ot">&lt;-</span> <span class="fu">stopwords</span>(<span class="st">"ru"</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>custom_sw <span class="ot">&lt;-</span> <span class="fu">c</span>(sw, <span class="st">"это"</span>, <span class="st">"все"</span>, <span class="st">"всё"</span>,<span class="st">"лишь"</span>,<span class="st">"меж"</span>,<span class="st">"m"</span>, <span class="st">"me"</span>, <span class="st">"km"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>, <span class="st">"h"</span>, <span class="st">"i"</span>, <span class="st">"j"</span>, <span class="st">"k"</span>, <span class="st">"l"</span>, <span class="st">"n"</span>, <span class="st">"o"</span>, <span class="st">"p"</span>, <span class="st">"q"</span>, <span class="st">"r"</span>, <span class="st">"s"</span>, <span class="st">"t"</span>, <span class="st">"u"</span>, <span class="st">"v"</span>, <span class="st">"w"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>corpus_sw_words <span class="ot">&lt;-</span> corpus_words <span class="sc">|&gt;</span> </span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> custom_sw)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>text_word_counts <span class="ot">&lt;-</span> corpus_sw_words  <span class="sc">|&gt;</span> </span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title, word, <span class="at">sort =</span> T)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>text_word_tfidf <span class="ot">&lt;-</span> text_word_counts <span class="sc">|&gt;</span> </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_tf_idf</span>(word, title, n)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>text_word_tfidf <span class="sc">|&gt;</span> </span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(title) <span class="sc">|&gt;</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>tf_idf) <span class="sc">|&gt;</span> </span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder_within</span>(word, tf_idf, title), tf_idf, <span class="at">fill =</span> title)) <span class="sc">+</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"tf-idf"</span>) <span class="sc">+</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>title, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reordered</span>() <span class="sc">+</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="about_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">udpipe_download_model</span>(<span class="st">"russian"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Downloading udpipe model from https://raw.githubusercontent.com/jwijffels/udpipe.models.ud.2.5/master/inst/udpipe-ud-2.5-191206/russian-gsd-ud-2.5-191206.udpipe to C:/Users/katya/Documents/dostoyevsky_project/russian-gsd-ud-2.5-191206.udpipe</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> - This model has been trained on version 2.5 of data from https://universaldependencies.org</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> - The model is distributed under the CC-BY-SA-NC license: https://creativecommons.org/licenses/by-nc-sa/4.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> - Visit https://github.com/jwijffels/udpipe.models.ud.2.5 for model license details.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> - For a list of all models and their licenses (most models you can download with this package have either a CC-BY-SA or a CC-BY-SA-NC license) read the documentation at ?udpipe_download_model. For building your own models: visit the documentation by typing vignette('udpipe-train', package = 'udpipe')</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Downloading finished, model stored at 'C:/Users/katya/Documents/dostoyevsky_project/russian-gsd-ud-2.5-191206.udpipe'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ud_model <span class="ot">&lt;-</span> <span class="fu">udpipe_load_model</span>(model<span class="sc">$</span>file_model)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>corpus_ann <span class="ot">&lt;-</span> <span class="fu">udpipe_annotate</span>(ud_model, corpus_sep<span class="sc">$</span>text, <span class="at">doc_id =</span> corpus_sep<span class="sc">$</span>title)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>corpus_pos <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(corpus_ann) <span class="sc">|&gt;</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>paragraph_id)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>corpus_pos <span class="sc">|&gt;</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos <span class="sc">==</span> <span class="st">"NOUN"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(doc_id, token, lemma, upos, xpos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code># A tibble: 16,999 × 5
+   doc_id    token      lemma      upos  xpos 
+   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;
+ 1 бобок.txt деревне    деревня    NOUN  NN   
+ 2 бобок.txt откровение откровение NOUN  NN   
+ 3 бобок.txt чертах     черта      NOUN  NN   
+ 4 бобок.txt Искуситель Искуситель NOUN  NN   
+ 5 бобок.txt г-на       г-н        NOUN  NN   
+ 6 бобок.txt комедии    комедия    NOUN  NN   
+ 7 бобок.txt живи       живь       NOUN  NN   
+ 8 бобок.txt плоховат   плоховатый NOUN  NN   
+ 9 бобок.txt Жаль       жаль       NOUN  NN   
+10 бобок.txt тут        тут        NOUN  NN   
+# ℹ 16,989 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>nouns <span class="ot">&lt;-</span> corpus_pos  <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"NOUN"</span>, <span class="st">"PROPN"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(doc_id, lemma, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>nouns <span class="sc">|&gt;</span> </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(doc_id) <span class="sc">|&gt;</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder_within</span>(lemma, n, doc_id), n, <span class="at">fill =</span> lemma)) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reordered</span>() <span class="sc">+</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> doc_id, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="about_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Я понимаю, что проект сделан из рук вон некачественно и плохо, но к концу года силы совсем покинули меня. Хотелось бы сделать что-то хорошее, надеюсь, что это ещё впереди. Спасибо вам за курс, я правда научилась чему-то очень полезному, важному и новому (хотя, вероятно, этого не видно по этому проекту, но всё-таки это правда!)</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
