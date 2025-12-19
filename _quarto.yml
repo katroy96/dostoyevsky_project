@@ -18,7 +18,7 @@ format:
     css: styles.css
     toc: true
     fontsize: "14pt"
-    bibliography: bibliography.bib
+    bibliography: dostoyevsky1971.bib, dostoyevsky1972.bib, dostoyevsky1980.bib, dostoyevsky1981.bib, dostoyevsky1983.bib
 
 
 
