@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Комплексный анализ малой прозы Ф. М. Достоевского"
+  navbar:
+    left:
+      - href: index.qmd
+        text: О проекте
+      - href: about.qmd
+        text: Ход исследования
+
+format:
+  html:
+    theme:
+      - flatly
+    css: styles.css
+    toc: true
+    fontsize: "14pt"
+
+
+
